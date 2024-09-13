@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users',
+    'listings'
 ]
 
 MIDDLEWARE = [
@@ -74,9 +77,18 @@ WSGI_APPLICATION = 'estate.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default': {},
+    'users': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'listing_users',
+        'USER': 'postgres',
+        'PASSWORD': '132361078postgres'
+    },
+    'listings': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'listing_listings',
+        'USER': 'postgres',
+        'PASSWORD': '132361078postgres'
     }
 }
 
@@ -111,7 +123,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -121,3 +132,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SITE_ID = 1
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = 'uploads'
+
+AUTH_USER_MODEL = "users.UserAccount"
