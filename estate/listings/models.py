@@ -37,7 +37,7 @@ class House(models.Model):
     def __str__(self):
         return self.title
     def save(self, *args, **kwargs):
-        ''' Automatically saves this model to the 'secondary' database'''
+        ''' Automatically saves this model to the 'listings' database'''
         kwargs['using'] = 'listings'
         super().save(*args, **kwargs)
 
@@ -68,6 +68,6 @@ class PlotOfLand(models.Model):
     def __str__(self):
         return self.title
     def save(self, *args, **kwargs):
-        ''' Automatically saves this model to the 'secondary' database'''
+        ''' Automatically saves this model to the 'listings' database'''
         kwargs['using'] = 'listings'
         super().save(*args, **kwargs)
