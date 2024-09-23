@@ -9,14 +9,15 @@ class UserAccountManager(BaseUserManager):
         if not email:
             raise ValueError('Users must have an email address')
         
-        email = models.EmailField(max_length=254)
-        name = models.CharField(max_length=150)
+        email = self.normalize_email(email)
         user = self.model(email=email, name=name)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
     def create_realtor(self, email, name, password=None):
+        """ Creates and saves a realtor user with the given email, name and password """
+
         user = self.create_user(email, name, password)
         
         user.is_realtor = True
@@ -24,6 +25,8 @@ class UserAccountManager(BaseUserManager):
         return user
     
     def create_superuser(self, email, name, password=None):
+        """ Creates and saves a superuser with the given email, name and password """
+
         user = self.create_user(email, name, password)
 
         user.is_staff = True
@@ -39,10 +42,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_realtor = models.BooleanField(default=False)
     
-    objects = BaseUserManager()
+    objects = UserAccountManager()
 
-    USERNAME_FEILD = 'email'
-    REQUIRED_FIELDS = 'name'
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return self.email

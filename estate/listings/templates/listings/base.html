@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    {% block css_files %}{% endblock css_files %}
+    <link rel="stylesheet" href="{% static "listings/css/bootstrap.css" %}">
+</head>
+<body>
+    {% include "listings/includes/header.html" %}
+    {% block content %}{% endblock content %}
+    {% include "listings/includes/footer.html" %}
+    {% block javascript_files %}
+    <script src='{% static "listings/js/bootstrap.js" %}'></script>
+    <script src='{% static "listings/js/popper.min.js.js" %}'></script>
+    {% endblock javascript_files %}
+</body>
+</html>

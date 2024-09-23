@@ -1,0 +1,71 @@
+{% extends "listings/base.html" %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block content %}
+    <section class='container'>
+        <a href='{% url "create_house" %}'>
+            <button class='btn btn-success'>
+                Add House
+            </button>
+        </a>
+        <a href='{% url "create_plot_of_land" %}'>
+            <button class='btn btn-success'>
+                Add Plot of Land
+            </button>
+        </a>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'> Title </th>
+                    <th scope='col'> Realtor </th>
+                    <th scope='col'> Area </th>
+                    <th scope='col'> Price </th>
+                    <th scope='col'> Update </th>
+                    <th scope='col'> Delete </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for house in houses %}
+                    <tr>
+                        <td> {{ house.title }} </td>
+                        <td> {{ house.realtor }} </td>
+                        <td> {{ house.area }} </td>
+                        <td> {{ house.price }} </td>
+                        {% if user.is_authenticated %}
+                            <td> 
+                                <a href='{% url "update" house.id %}'><button class='btn btn-warning'> Update </button></a>
+                            </td>
+                            <td> 
+                                <form action='{% url "delete" %}' method='POST'>
+                                    {% csrf_token %}
+                                    <input type='hidden' value='{{ house.id }}' name='house_id'>
+                                    <button class='btn btn-danger' type='submit'> Delete </button>
+                                </form> 
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+                {% for plot in plots %}
+                    <tr>
+                        <td> {{ plot.title }} </td>
+                        <td> {{ plot.author }} </td>
+                        {% if user.is_authenticated %}
+                            <td> 
+                                <a href='{% url "update" plot.id %}'><button class='btn btn-warning'> Update </button></a>
+                            </td>
+                            <td> 
+                                <form action='{% url "delete" %}' method='POST'>
+                                    {% csrf_token %}
+                                    <input type='hidden' value='{{ plot.id }}' name='plot_id'>
+                                    <button class='btn btn-danger' type='submit'> Delete </button>
+                                </form> 
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% extends "book/base.html" %}
+{% load static %}
+    
+{% block title %} CRUDS {% endblock title %}
+
+{% block content %}
+    <section class='container'>
+        <form action={% url "search" %} method='POST'>
+            {% csrf_token %}
+            <input type='search' name='seeked'>
+            <button class='btn btn-primary' type='submit'>Search</button>
+        </form>
+        <a href='{% url "create" %}'>
+            <button class='btn btn-success'>
+                Add one 
+            </button>
+        </a>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'> Title </th>
+                    <th scope='col'> Author </th>
+                    <th scope='col'> Update </th>
+                    <th scope='col'> Delete </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td> {{ book.title }} </td>
+                        <td> {{ book.author }} </td>
+                        {% if user.is_authenticated %}
+                            <td> 
+                                <a href='{% url "update" book.id %}'><button class='btn btn-warning'> Update </button></a>
+                            </td>
+                            <td> 
+                                <form action='{% url "delete" %}' method='POST'>
+                                    {% csrf_token %}
+                                    <input type='hidden' value='{{ book.id }}' name='book_id'>
+                                    <button class='btn btn-danger' type='submit'> Delete </button>
+                                </form> 
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section class='footer'>
+        <p>THANK YOU FOR VISITING OUR WEBSITE</p>
+    </section>
+{% endblock content %}

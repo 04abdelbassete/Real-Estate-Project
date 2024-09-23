@@ -2,7 +2,7 @@ class AuthRouter:
     """A router to control all database operations on models in the
     users and contenttypes applications. """
 
-    route_app_labels = {'users', 'admin', 'contenttypes', 'sessions'}
+    route_app_labels = {'users', 'admin', 'contenttypes', 'sessions', 'auth', 'account', 'socialaccount'}
 
     def db_for_read(self, model, **hints):
         """

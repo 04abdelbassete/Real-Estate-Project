@@ -1,0 +1,25 @@
+{% extends "listings/base.html" %}
+{% load static %}
+
+{% block title %}{{ estate.title }}{% endblock title %}
+
+{% block content %}
+<section class='container bg-light mt-3'>
+    <h1> {{ estate.title }} </h1>
+    <h2> {{ estate.realtor }} <h2>
+    <h4 class='mt-5'> Description </h4>
+    <p> {{ estate.description }} </p>
+    <h4> Resume </h4>
+    <p> {{ estate.resume }} </p>
+    {% if owner %}
+    <div class='row'>
+        <a class='col-1' href='{% url "update" estate.id %}'><button class='btn btn-warning'> Update </button></a>
+        <form class='col-1' action='{% url "delete" %}' method='POST'>
+            {% csrf_token %}
+            <input type='hidden' value='{{ estate.id }}' name='estate_id'>
+            <button class='btn btn-danger' type='submit'> Delete </button>
+        </form>
+        {% endif %} 
+    </div>
+</section>
+{% endblock content %}

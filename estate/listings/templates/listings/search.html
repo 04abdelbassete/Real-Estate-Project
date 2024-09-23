@@ -1,0 +1,35 @@
+{% extends "book/base.html" %}
+{% load static %}
+
+{% block title %} Search results {% endblock title %}
+
+{% block content %}
+<section class='container'>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th scope='col'> Title </th>
+                <th scope='col'> Author </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in f_book %}
+            <tr>
+        
+            <td><a class='text-decoration-none' href={% url "book_view" result.slug %}> {{ result.title }} </a></td>
+            <td> {{ result.author }} </td>
+        
+            </tr>
+            {% endfor %}
+            {% for result in f_author %}
+            <tr>
+        
+            <td><a class='text-decoration-none' href={% url "book_view" result.slug %}> {{ result.title }} </a></td>
+            <td> {{ result.author }} </td>
+        
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock content %}

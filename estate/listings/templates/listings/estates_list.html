@@ -1,0 +1,36 @@
+{% extends "listings/base.html" %}
+
+{% block title %}
+    Estates List
+{% endblock title %}
+
+{% block content %}
+    <body>
+        <section class='container ms-0 me-0'>
+            <h1> REAL ESTATE </h1>
+            <div class='row'>
+                {% for house in houses %}
+                    <div class='card col-4 m-1'>
+                        <img src='{{ house.main_picture.url }}' class='card-img'>
+                        <div class='card-body'>
+                            <h3 class='card-title'> {{ house.title }} </h3>
+                            <p> {{ house.address }} </br> 
+                                {{ house.price }} </br>
+                                {{ house.sale_type }} </p>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for plot in plots %}
+                    <div class='card col-4 m-1'>
+                        <img src='{{ plot.main_picture.url }}' class='card-img'>
+                        <div class='card-body'>
+                            <h3 class='card-title'> {{ plot.title }} </h3>
+                            <p> {{ plot.address }} </br> 
+                                {{ plot.price }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </body>
+{% endblock content %}

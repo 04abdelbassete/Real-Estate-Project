@@ -1,7 +1,7 @@
 class ListingRouter:
     """A router to control all database operations on models in the listings application. """
 
-    route_app_labels = {'listings'}
+    route_app_labels = {'listings',}
 
     def db_for_read(self, model, **hints):
         """
