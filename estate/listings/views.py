@@ -5,9 +5,16 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from django.urls import reverse
+from django.conf import settings
+
+from paypal.standard.forms import PayPalPaymentsForm
+
+import uuid
 
 from .models import House, PlotOfLand
 from .forms import HouseForm, PlotOfLandForm
+from users.models import UserAccount
     
 def search(request):
     
@@ -62,12 +69,12 @@ def create_plot_of_land(request):
 
 
 @login_required    
-def update(request, pk):
+def update(request, slug):
 
     '''you can deal with two forms from two teplates in one view. However you weren't need a form in
     update part in main template'''
     try:
-        estate = get_object_or_404(House, id=pk)
+        estate = get_object_or_404(House, slug=slug)
         if request.method=='POST':
     
             form = HouseForm(request.POST, instance=estate)
@@ -77,12 +84,12 @@ def update(request, pk):
         else:
     
             form = HouseForm(instance=estate)
-            return render(request, 'estate/update.html', {
+            return render(request, 'listings/update.html', {
             'estate': estate,
             'form': form
         })
     except:
-        estate = get_object_or_404(PlotOfLand, id=pk)
+        estate = get_object_or_404(PlotOfLand, slug=slug)
         if request.method=='POST':
     
             form = PlotOfLandForm(request.POST, instance=estate)
@@ -93,7 +100,7 @@ def update(request, pk):
         else:
         
             form = PlotOfLandForm(instance=estate)
-            return render(request, 'estate/update.html', {
+            return render(request, 'listings/update.html', {
                 'estate': estate,
                 'form': form
             })
@@ -142,22 +149,55 @@ def estate_view(request, slug):
     except:
         estate = get_object_or_404(PlotOfLand, slug=slug)
 
+    estate_realtor = UserAccount.objects.using('users').get(email=estate.realtor)
+
     if request.user.is_authenticated:
-        if estate.add_by==request.user.manager:
+        if estate_realtor==request.user:
             owner = True
             return render(request, 'listings/estate_view.html', {
                 'owner': owner,
-                'estate': estate
+                'estate': estate,
+                'realtor': estate_realtor
             })
         else:
             owner = False
             return render(request, 'listings/estate_view.html', {
                 'owner': owner,
-                'estate': estate
+                'estate': estate,
+                'realtor': estate_realtor
             })
     else:
         return HttpResponseRedirect('/login')
 
 
 def payment(request):
-    pass
+    
+    estate_slug = request.POST['estate_slug']
+    try:
+        estate = get_object_or_404(House, slug=estate_slug)
+    except:
+        estate = get_object_or_404(PlotOfLand, slug=estate_slug)
+    host = request.get_host()
+    paypal_dict = {
+        'buisness': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': 1,
+        'item_name': 'Estate Order',
+        'invoice': str(uuid.uuid4()),
+        'currency_code': 'USD',
+        'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
+        'success_url': 'http://{}{}'.format(host, reverse('payment_success')),
+        'cancel_return': 'http://{}{}'.format(host, reverse('payment_failed')),
+    }
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    if request.user.is_authenticated:
+        return render(request, 'listings/payment.html', {
+            'form': form,
+        })
+    else:
+        return HttpResponseRedirect('/accounts/login/')
+
+def payment_success(request):
+    return render(request, 'listings/payment_success.html')
+
+def payment_failed(request):
+    return render(request, 'listings/payment_failed.html')

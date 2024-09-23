@@ -1,11 +1,10 @@
-{% extends "book/base.html" %}
-{% load static %}
+{% extends "listings/base.html" %}
 
-{% block title %} {{ book.title }} {% endblock title %}
+{% block title %} {{ estate.title }} {% endblock title %}
 
 {% block content %}
 <section class='container'>
-    <form action={% url "update" book.id  %} method='POST'>
+    <form action={% url "update" estate.slug  %} method='POST'>
         {% csrf_token %}
 
         {% for field in form %}

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
+    'paypal.standard.ipn',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
@@ -180,9 +182,16 @@ MEDIA_ROOT = 'uploads'
 
 AUTH_USER_MODEL = "users.UserAccount"
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = 'abdo@idrmi.com'
