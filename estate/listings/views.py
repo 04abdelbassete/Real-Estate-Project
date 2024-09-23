@@ -180,7 +180,7 @@ def payment(request):
     host = request.get_host()
     paypal_dict = {
         'buisness': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': 1,
+        'amount': estate.price,
         'item_name': 'Estate Order',
         'invoice': str(uuid.uuid4()),
         'currency_code': 'USD',

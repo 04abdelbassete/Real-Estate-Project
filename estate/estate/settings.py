@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1s(00jw6^iol_-9)h8f!^tci#@70pk0w*5u^sbfu0e^ko9dg3d'
+import os
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -78,8 +79,8 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '790180011770-0aai693kar9qlaepl2q77a8turmq2bd1.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
             'key': ''
         }
     }
@@ -121,15 +122,15 @@ DATABASES = {
     'default': {},
     'users': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'listing_users',
-        'USER': 'postgres',
-        'PASSWORD': '132361078postgres'
+        'NAME': os.environ.get('USERS_NAME'),
+        'USER': os.environ.get('USERS_USER'),
+        'PASSWORD': os.environ.get('USERS_PASSWORD')
     },
     'listings': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'listing_listings',
-        'USER': 'postgres',
-        'PASSWORD': '132361078postgres'
+        'NAME': os.environ.get('LISTINGS_NAME'),
+        'USER': os.environ.get('LISTINGS_USER'),
+        'PASSWORD': os.environ.get('LISTINGS_PASSWORD')
     }
 }
 
@@ -194,4 +195,4 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 
 PAYPAL_TEST = True
-PAYPAL_RECEIVER_EMAIL = 'abdo@idrmi.com'
+PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_EMAIL')
