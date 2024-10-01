@@ -167,7 +167,7 @@ def estate_view(request, slug):
                 'realtor': estate_realtor
             })
     else:
-        return HttpResponseRedirect('/login')
+        return HttpResponseRedirect('/accounts/login/')
 
 
 def payment(request):
@@ -179,8 +179,8 @@ def payment(request):
         estate = get_object_or_404(PlotOfLand, slug=estate_slug)
     host = request.get_host()
     paypal_dict = {
-        'buisness': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': estate.price,
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': '{:.2f}'.format(estate.price),
         'item_name': 'Estate Order',
         'invoice': str(uuid.uuid4()),
         'currency_code': 'USD',
