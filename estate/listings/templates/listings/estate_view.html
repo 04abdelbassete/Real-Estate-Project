@@ -37,7 +37,7 @@
     <p>Description: {{ estate.description }}</p>
     <p>Area: {{ estate.area }}</p>
     <p>Address: {{ estate.address }}</p>
-    <p>Zonning Type: {{ estate.zonning_type }}</p>
+    {% if is_plot %} <p>Zonning Type: {{ estate.zonning_type }}</p> {% endif %}
     <p>Home Type: {{ estate.home_type }}</p>
     <p>Bedrooms: {{ estate.bedrooms }}</p>
     <p>Bathrooms: {{ estate.bathrooms }}</p>

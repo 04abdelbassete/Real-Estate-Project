@@ -148,6 +148,7 @@ def estate_view(request, slug):
         estate = get_object_or_404(House, slug=slug)
     except:
         estate = get_object_or_404(PlotOfLand, slug=slug)
+        is_plot = True
 
     estate_realtor = UserAccount.objects.using('users').get(email=estate.realtor)
 
@@ -157,14 +158,16 @@ def estate_view(request, slug):
             return render(request, 'listings/estate_view.html', {
                 'owner': owner,
                 'estate': estate,
-                'realtor': estate_realtor
+                'realtor': estate_realtor,
+                'is_plot': is_plot
             })
         else:
             owner = False
             return render(request, 'listings/estate_view.html', {
                 'owner': owner,
                 'estate': estate,
-                'realtor': estate_realtor
+                'realtor': estate_realtor,
+                'is_plot': is_plot
             })
     else:
         return HttpResponseRedirect('/accounts/login/')
