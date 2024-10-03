@@ -185,7 +185,7 @@ def payment(request):
         'invoice': str(uuid.uuid4()),
         'currency_code': 'USD',
         'notify_url': 'http://{}{}'.format(host, reverse('paypal-ipn')),
-        'success_url': 'http://{}{}'.format(host, reverse('payment_success')),
+        'return_url': 'http://{}{}'.format(host, reverse('payment_success')),
         'cancel_return': 'http://{}{}'.format(host, reverse('payment_failed')),
     }
     form = PayPalPaymentsForm(initial=paypal_dict)
